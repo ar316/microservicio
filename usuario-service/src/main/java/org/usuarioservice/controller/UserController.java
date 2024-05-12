@@ -33,6 +33,7 @@ public class UserController {
         return ResponseEntity.ok(userService.create(user)) ;
     }
 
+    //crear el endpint para editar
     @PutMapping("/edit")
     public ResponseEntity<User> updateUser(@RequestBody  User user) {
 
