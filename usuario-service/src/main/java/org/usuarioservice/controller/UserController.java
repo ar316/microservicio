@@ -27,7 +27,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(id));
     }
 
-
+//endpoint para crear usuario
     @PostMapping("/create")
     public ResponseEntity<User> getUserById(@RequestBody  User user) {
         return ResponseEntity.ok(userService.create(user)) ;
