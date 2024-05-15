@@ -4,6 +4,7 @@ package org.usuarioservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.usuarioservice.DTO.CarDTO;
 import org.usuarioservice.entities.User;
 import org.usuarioservice.services.UserService;
 
@@ -43,5 +44,15 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable  Long id) {
         return ResponseEntity.ok( userService.delete(id));
+    }
+
+    @GetMapping("getCarsByUser/{id}")
+    public ResponseEntity<List<CarDTO>> getCars(@PathVariable Long id) {
+        List<CarDTO> carsByUser = userService.getAllCarsByUser(id);
+        if (carsByUser != null && !carsByUser.isEmpty()) {
+            return ResponseEntity.ok(carsByUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
