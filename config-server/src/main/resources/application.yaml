@@ -2,8 +2,6 @@ server:
   port: 8081
 
 spring:
-  application:
-    name: msvc-config-server
   cloud:
     config:
       server:

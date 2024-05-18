@@ -1,6 +1,7 @@
+server:
+  port: 8082
+
 spring:
-  application:
-    name: usuario-service
   datasource:
     url: jdbc:mysql://localhost:3307/usersdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
@@ -10,6 +11,3 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-server:
-  port: 8082
