@@ -9,6 +9,7 @@ import org.usuarioservice.entities.User;
 import org.usuarioservice.services.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -47,8 +48,8 @@ public class UserController {
     }
 
     @GetMapping("getCarsByUser/{id}")
-    public ResponseEntity<List<CarDTO>> getCars(@PathVariable Long id) {
-        List<CarDTO> carsByUser = userService.getAllCarsByUser(id);
+    public ResponseEntity<Map<String, Object>> getCars(@PathVariable Long id) {
+        Map<String, Object> carsByUser = userService.getAllCarsByUser(id);
         if (carsByUser != null && !carsByUser.isEmpty()) {
             return ResponseEntity.ok(carsByUser);
         } else {

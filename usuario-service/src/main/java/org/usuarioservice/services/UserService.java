@@ -1,15 +1,16 @@
 package org.usuarioservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.usuarioservice.DTO.CarDTO;
 import org.usuarioservice.entities.User;
 import org.usuarioservice.repository.IUserRepository;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class UserService implements IUserService {
@@ -22,8 +23,40 @@ public class UserService implements IUserService {
 
 
     //metodo para traer los carros del microservicio carro al micro de usuarios
-    public List<CarDTO> getAllCarsByUser(Long IdUser){
-        return List.of(restTemplate.getForObject("http://localhost:9090/car/usuario/getCar/" + IdUser, CarDTO[].class));
+    public Map<String, Object> getAllCarsByUser(Long IdUser) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        try {
+            // Buscando usuario
+            User nameUser = userRepository.findById(IdUser).orElse(null);
+            if (nameUser == null) {
+                result.put("message", "User Not Found");
+                return result;
+            }
+            result.put("usuario", nameUser.getName());
+
+            try {
+                // Llamada al microservicio de carros
+                ResponseEntity<CarDTO[]> response = restTemplate.getForEntity("http://localhost:9090/car/usuario/getCar/" + IdUser, CarDTO[].class);
+
+                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                    List<CarDTO> carList = Arrays.asList(response.getBody());
+                    if (carList.isEmpty()) {
+                        result.put("message", "no tiene carros");
+                    } else {
+                        result.put("Carros", carList);
+                    }
+                } else {
+                    result.put("message", "no tiene carros");
+                }
+            } catch (HttpClientErrorException.NotFound e) {
+                // Manejar específicamente el caso 404 Not Found
+                result.put("message", "no tiene carros");
+            }
+        } catch (Exception e) {
+            result.clear(); // Clear the result to ensure it only contains the error message
+            result.put("message", "An error occurred while fetching the data");
+        }
+        return result;
     }
 
     @Override
@@ -47,7 +80,8 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("No se encontró ningún usuario con el ID proporcionado"));
     }
 
     @Override
