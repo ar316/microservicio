@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: msvc-config-server
+  cloud:
+    config:
+      server:
+        git:
+          default-label: master
+          uri: https://github.com/ar316/microservicio
+          search-paths: config-data
