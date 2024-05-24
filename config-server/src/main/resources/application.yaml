@@ -6,6 +6,6 @@ spring:
     config:
       server:
         git:
-          default-label: master
+          default-label: eureka
           uri: https://github.com/ar316/microservicio
           search-paths: config-data
