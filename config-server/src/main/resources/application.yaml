@@ -9,3 +9,6 @@ spring:
           default-label: master
           uri: https://github.com/ar316/microservicio
           search-paths: config-data
+
+  application:
+    name: config-service
