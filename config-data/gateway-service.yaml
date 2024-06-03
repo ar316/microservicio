@@ -23,6 +23,6 @@ spring:
             - Path=/car/**
 
         - id: USUARIO-SERVICE
-          uri: lb://USUARIO-SERVICE
+          uri: http://host.docker.internal:8082
           predicates:
             - Path=/user/**
