@@ -6,9 +6,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      default-zone: http://localhost:8761/eureka
-      instance:
-        hostname: localhost
+      defaultZone: http://localhost:8761/eureka  # Corregido: defaultZone en lugar de default-zone
 
 spring:
   cloud:
@@ -22,7 +20,7 @@ spring:
           predicates:
             - Path=/car/**
 
-        - id: USUARIO-SERVICE
-          uri: http://host.docker.internal:8082
+        - id: USUARIO-SERVICE  # He cambiado el identificador a mayúsculas
+          uri: http://localhost:8082
           predicates:
             - Path=/user/**
